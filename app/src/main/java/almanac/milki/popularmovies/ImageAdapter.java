@@ -28,22 +28,40 @@ public class ImageAdapter extends ArrayAdapter<String> {
 
 
 
-    public long getItemId(int position) {
-        return 0;
-    }
 
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-
+    public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = activity.getLayoutInflater();
-        final View rowView= inflater.inflate(R.layout.movie_single_poster, null, true);
 
-        ImageView imageView = (ImageView)rowView.findViewById(R.id.singlePoster);
-        Picasso.with(activity).load(MoviePoster[i]).into(imageView);
-        return rowView;
+        ViewHodler holder;
+
+        if(convertView == null) {
+            View rowView = inflater.inflate(R.layout.movie_single_poster, parent, true);
+            holder = new ViewHodler();
+
+            holder.someImageView = (ImageView) rowView.findViewById(R.id.singlePoster);
+            rowView.setTag(holder);
+        }
+        else {
+            holder = (ViewHodler) convertView.getTag();
+        }
+
+        if (MoviePoster[position] != null)
+            Picasso.with(activity)
+                    .load(MoviePoster[position])
+                    .into(holder.someImageView);
+
+        return convertView;
+    }
+
+    class ViewHodler {
+        ImageView someImageView;
     }
 
 
 
-}
+    }
+
+
+
